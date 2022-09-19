@@ -38,7 +38,7 @@ class Home : AppCompatActivity() {
         scope.launch {
             var recipes = MainRepository.fetchData(this@Home)
             Log.d("recipes - home ", recipes.size.toString())
-            
+
         }
     }
 
