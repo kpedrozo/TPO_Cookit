@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import com.example.cookit.data.MainRepository
 import com.example.cookit.models.Recipe
+import com.example.cookit.models.ResponseAPI
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -16,6 +17,7 @@ class Home : AppCompatActivity() {
     private val  scope = CoroutineScope(coroutineContext)
 
     private var recipes = ArrayList<Recipe>()
+    private var recetas : ResponseAPI? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +34,22 @@ class Home : AppCompatActivity() {
             cambioPantallaFavoritos()
         }
     }
-
+/*
     override fun onStart() {
         super.onStart()
         scope.launch {
             var recipes = MainRepository.fetchData(this@Home)
             Log.d("recipes - home ", recipes.size.toString())
+
+        }
+    }
+
+ */
+
+    override fun onStart() {
+        super.onStart()
+        scope.launch {
+            recetas = MainRepository.fetchData(this@Home)
 
         }
     }
@@ -57,6 +69,7 @@ class Home : AppCompatActivity() {
         var intent = Intent(this, RecipeList::class.java)
         intent.putExtra("Titulo", "Favoritos")
         startActivity(intent)
+
 
     }
 }

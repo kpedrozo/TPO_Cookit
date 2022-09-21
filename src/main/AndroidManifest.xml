@@ -44,6 +44,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value='502e29b08c5b48ee9b92ebd598c8ee8b' />
     </application>
 
 </manifest>

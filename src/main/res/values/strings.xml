@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cookit</string>
+    <string name="titulo_home">Encontrá las mejores recetas</string>
+    <string name="lblSearch">Buscar recetas</string>
+    <string name="btnFavoritos">Favoritos</string>
+    <string name="subtitulo_home">Tendencia</string>
+
+
 </resources>
