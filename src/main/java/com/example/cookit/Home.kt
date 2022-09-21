@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import com.example.cookit.data.MainRepository
 import com.example.cookit.models.Recipe
+import com.example.cookit.models.RecipeDetail
 import com.example.cookit.models.ResponseAPI
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -19,6 +20,7 @@ class Home : AppCompatActivity() {
     private var recipes = ArrayList<Recipe>()
     private var recetas : ResponseAPI? = null
 
+    private var recetaDetail : RecipeDetail? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +51,8 @@ class Home : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         scope.launch {
-            recetas = MainRepository.fetchData(this@Home)
-
+            recetas = MainRepository.getRecipes(this@Home)
+            recetaDetail = MainRepository.getRecipebyID(this@Home)
         }
     }
 
