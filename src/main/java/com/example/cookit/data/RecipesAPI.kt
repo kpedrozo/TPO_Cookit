@@ -12,7 +12,8 @@ import retrofit2.http.Query
 interface RecipesAPI {
 
     @GET("/recipes/complexSearch")
-    fun getRecipes (@Header("x-api-key") apiKey : String) : Call<ResponseAPI>;
+    fun getRecipes (@Header("x-api-key") apiKey : String,
+                    @Query("number") number : Int) : Call<ResponseAPI>;
 
 
     @GET("/recipes/{id}/information/")

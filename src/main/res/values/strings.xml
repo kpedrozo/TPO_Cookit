@@ -4,6 +4,10 @@
     <string name="lblSearch">Buscar recetas</string>
     <string name="btnFavoritos">Favoritos</string>
     <string name="subtitulo_home">Tendencia</string>
+    <string name="favourite">favourite</string>
+    <string name="recipeTitle">Titulo</string>
+    <string name="instruccions">Instrucciones</string>
+    <string name="imgrecipe">imgRecipe</string>
 
 
 </resources>

@@ -7,12 +7,12 @@ import com.example.cookit.models.ResponseAPI
 
 class MainRepository {
     companion object {
-        suspend fun getRecipes (context: Context) : ResponseAPI {
+        suspend fun getRecipes (context: Context) : ArrayList<Recipe> {
             return APIService.getRecipes(context)
         }
 
-        suspend fun getRecipebyID (context: Context) : RecipeDetail {
-            return APIService.getRecipebyID(context)
-        }
+//        suspend fun getRecipebyID (context: Context) : RecipeDetail {
+//            return APIService.getRecipebyID(context)
+//        }
     }
 }
