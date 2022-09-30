@@ -2,8 +2,7 @@ package com.example.cookit.data
 
 import android.content.Context
 import com.example.cookit.models.Recipe
-import com.example.cookit.models.RecipeDetail
-import com.example.cookit.models.ResponseAPI
+import com.example.cookit.models.RecipeDetailModel
 
 class MainRepository {
     companion object {
@@ -11,8 +10,8 @@ class MainRepository {
             return APIService.getRecipes(context)
         }
 
-//        suspend fun getRecipebyID (context: Context) : RecipeDetail {
-//            return APIService.getRecipebyID(context)
-//        }
+        suspend fun getRecipebyID (context: Context) : RecipeDetailModel {
+            return APIService.getRecipebyID(context)
+        }
     }
 }

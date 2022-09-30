@@ -2,7 +2,7 @@ package com.example.cookit.models
 
 import com.google.gson.annotations.SerializedName
 
-data class RecipeDetail (
+data class RecipeDetailModel (
     val id : Int,
     val title : String,
     val image : String,

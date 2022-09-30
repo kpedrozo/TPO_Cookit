@@ -3,8 +3,7 @@ package com.example.cookit.data
 import android.content.Context
 import android.util.Log
 import com.example.cookit.models.Recipe
-import com.example.cookit.models.RecipeDetail
-import com.example.cookit.models.ResponseAPI
+import com.example.cookit.models.RecipeDetailModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -36,23 +35,23 @@ class APIService {
 
         }
 
-//        suspend fun getRecipebyID (context: Context) : RecipeDetail {
-//            val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//
-//            val apiEndpoint = retrofit.create(RecipesAPI::class.java)
-//            val result = apiEndpoint.getRecipebyID(idRecipe, apiKey).execute()
-//
-//
-//            return if (result.isSuccessful) {
-//                result.body()!!
-//            } else {
-//                Log.e ("Api-Service", "No se encuentra la receta")
-//                val response = RecipeDetail(0,"","", ArrayList(),"")
-//                return response
-//            }
-//        }
+        suspend fun getRecipebyID (context: Context) : RecipeDetailModel {
+            val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val apiEndpoint = retrofit.create(RecipesAPI::class.java)
+            val result = apiEndpoint.getRecipebyID(idRecipe, apiKey).execute()
+
+
+            return if (result.isSuccessful) {
+                result.body()!!
+            } else {
+                Log.e ("Api-Service", "No se encuentra la receta")
+                val response = RecipeDetailModel(0,"","", ArrayList(),"")
+                return response
+            }
+        }
 
     }
 }

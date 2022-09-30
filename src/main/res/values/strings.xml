@@ -8,6 +8,9 @@
     <string name="recipeTitle">Titulo</string>
     <string name="instruccions">Instrucciones</string>
     <string name="imgrecipe">imgRecipe</string>
+    <string name="titulo_favourite">Recetas guardadas</string>
+    <string name="background">background</string>
+    <string name="login">Continuar con Google</string>
 
 
 </resources>

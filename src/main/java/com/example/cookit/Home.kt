@@ -4,14 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TableLayout
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookit.data.MainRepository
 import com.example.cookit.models.Recipe
-import com.example.cookit.models.RecipeDetail
 import com.example.cookit.models.ResponseAPI
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -20,13 +17,10 @@ import kotlin.coroutines.CoroutineContext
 class Home : AppCompatActivity() {
     private val coroutineContext : CoroutineContext = newSingleThreadContext("main")
     private val  scope = CoroutineScope(coroutineContext)
-
     private lateinit var rvRecipes : RecyclerView
-
     private var recipes = ArrayList<Recipe>()
     private var recetas : ResponseAPI? = null
 //    private var recetaDetail : RecipeDetail? = null
-
     private lateinit var adapter : RecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +29,10 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         initRecyclerView()
 
-
-
+        val btnFavourite = findViewById<ImageButton>(R.id.btnFavourite)
+        btnFavourite.setOnClickListener{
+            cambioPantallaFavoritos()
+        }
 
         /*
         val btnListadoRecetas = findViewById<Button>(R.id.btnLista)
@@ -52,11 +48,11 @@ class Home : AppCompatActivity() {
          */
     }
 
+
+
     fun initRecyclerView() {
         rvRecipes = findViewById<RecyclerView>(R.id.rvRecipes)
 //        rvRecipes.layoutManager = LinearLayoutManager(this)
-
-
         rvRecipes.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false) // cambio a un layout GRID buscar como funciona
         adapter = RecipeAdapter(recipes, this)
         rvRecipes.adapter = adapter
@@ -67,15 +63,12 @@ class Home : AppCompatActivity() {
         scope.launch {
             var recipes = MainRepository.fetchData(this@Home)
             Log.d("recipes - home ", recipes.size.toString())
-
         }
     }
-
  */
 
     override fun onStart() {
         super.onStart()
-
         scope.launch {
             recipes = MainRepository.getRecipes(this@Home) // hasta aca tengo las recetas > necesito mostrarlas
             Log.d("getrecetas OK", "llegamooos")
@@ -83,8 +76,13 @@ class Home : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 adapter.update(recipes)
             }
-
         }
+    }
+
+    private fun cambioPantallaFavoritos() {
+        val intent = Intent(this, Favourite::class.java)
+        intent.putExtra("Titulo", "Recetas guardadas")
+        startActivity(intent)
     }
 
 

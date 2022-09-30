@@ -1,7 +1,6 @@
 package com.example.cookit.data
 
-import com.example.cookit.models.Recipe
-import com.example.cookit.models.RecipeDetail
+import com.example.cookit.models.RecipeDetailModel
 import com.example.cookit.models.ResponseAPI
 import retrofit2.Call
 import retrofit2.http.GET
@@ -19,6 +18,6 @@ interface RecipesAPI {
     @GET("/recipes/{id}/information/")
     fun getRecipebyID (@Path("id") id : Int,
                        @Header ("x-api-key") apiKey : String)
-            : Call<RecipeDetail>
+            : Call<RecipeDetailModel>
 
 }
