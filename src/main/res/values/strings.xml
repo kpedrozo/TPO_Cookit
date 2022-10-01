@@ -11,6 +11,7 @@
     <string name="titulo_favourite">Recetas guardadas</string>
     <string name="background">background</string>
     <string name="login">Continuar con Google</string>
+    <string name="btnLogout">Cerrar sesion</string>
 
 
 </resources>
