@@ -10,8 +10,9 @@ class MainRepository {
             return APIService.getRecipes(context)
         }
 
-        suspend fun getRecipebyID (context: Context) : RecipeDetailModel {
-            return APIService.getRecipebyID(context)
+        suspend fun getRecipebyID (context: Context, id: Int?) : RecipeDetailModel {
+            return APIService.getRecipebyID(context, id!!)
         }
+
     }
 }

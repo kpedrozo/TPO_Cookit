@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.cookit.models.Ingredients
 import com.example.cookit.models.Recipe
+import com.example.cookit.models.RecipeDetailModel
 
 class RecipeAdapter (var items: MutableList<Recipe>,
                      context: Context)
     : RecyclerView.Adapter<RecipeViewHolder>() {
+
+    var onItemClick : ((Recipe) -> Unit)? = null
+
 
     private val context = context
 
@@ -28,6 +33,11 @@ class RecipeAdapter (var items: MutableList<Recipe>,
             .placeholder(com.google.android.material.R.drawable.ic_clock_black_24dp)
             .centerCrop()
             .into(holder.img)
+
+        val item = items[position]
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(item!!)
+        }
     }
 
     override fun getItemCount(): Int {

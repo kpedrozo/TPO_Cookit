@@ -12,7 +12,7 @@ class APIService {
 
         val BASE_URL = "https://api.spoonacular.com/"
         val apiKey = "502e29b08c5b48ee9b92ebd598c8ee8b"
-        val idRecipe = 632241 // valor a cambiar!!!!!!!!!
+        //val idRecipe = 632241 // valor a cambiar!!!!!!!!!
         val cantRecetas = 100;
 
         suspend fun getRecipes (context: Context) : ArrayList<Recipe>{
@@ -35,13 +35,14 @@ class APIService {
 
         }
 
-        suspend fun getRecipebyID (context: Context) : RecipeDetailModel {
+        suspend fun getRecipebyID (context: Context, id : Int) : RecipeDetailModel {
             val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             val apiEndpoint = retrofit.create(RecipesAPI::class.java)
-            val result = apiEndpoint.getRecipebyID(idRecipe, apiKey).execute()
+            Log.d("ID", "getRecipebyID: $id")
+            val result = apiEndpoint.getRecipebyID(id , apiKey).execute()
 
 
             return if (result.isSuccessful) {
@@ -52,6 +53,7 @@ class APIService {
                 return response
             }
         }
+
 
     }
 }
