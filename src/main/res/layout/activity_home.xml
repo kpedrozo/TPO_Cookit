@@ -7,31 +7,27 @@
 
     <TextView
         android:id="@+id/lblTituloFavourite"
-        android:layout_width="326dp"
-        android:layout_height="94dp"
+        android:layout_width="366dp"
+        android:layout_height="91dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/titulo_home"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.188"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/lblSubTituloHome"
         android:layout_width="146dp"
-        android:layout_height="33dp"
+        android:layout_height="0dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/subtitulo_home"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/simpleSearchView"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toBottomOf="@+id/simpleSearchView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -56,23 +52,21 @@
 
     <android.widget.SearchView
         android:id="@+id/simpleSearchView"
-        android:layout_width="357dp"
-        android:layout_height="37dp"
+        android:layout_width="354dp"
+        android:layout_height="59dp"
         android:contextClickable="false"
         android:queryHint="@string/lblSearch"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.296"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblTituloFavourite"
-        app:layout_constraintVertical_bias="0.014">
+        app:layout_constraintTop_toBottomOf="@+id/lblTituloFavourite">
 
     </android.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
-        android:layout_width="478dp"
-        android:layout_height="445dp"
+        android:layout_width="456dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btnLogout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
@@ -98,13 +92,12 @@
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="4dp"
         android:background="#E91E63"
         android:text="@string/btnLogout"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

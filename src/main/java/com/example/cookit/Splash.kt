@@ -15,7 +15,7 @@ class Splash : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        var usuarioLogueado = true
+        val usuarioLogueado = true
 
 
         if (usuarioLogueado) {

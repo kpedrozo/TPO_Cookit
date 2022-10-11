@@ -64,7 +64,7 @@ class Login : AppCompatActivity() {
             val accountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // SignIn Google OK -> intenta authenticar firebase
-                var account = accountTask.getResult(ApiException::class.java)
+                val account = accountTask.getResult(ApiException::class.java)
                 firebaseAuthWithGoogleAccount(account)
             }
             catch (e : Exception) {
@@ -80,7 +80,7 @@ class Login : AppCompatActivity() {
         firebaseAuth.signInWithCredential(credential)
             .addOnSuccessListener { authResult ->
                 // get usuario loggeado
-                var firebaseUser = firebaseAuth.currentUser
+                val firebaseUser = firebaseAuth.currentUser
                 // get user info
                 var uid = firebaseUser!!.uid
                 var email = firebaseUser!!.email
