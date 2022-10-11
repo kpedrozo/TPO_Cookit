@@ -5,6 +5,8 @@ import android.util.Log
 import com.example.cookit.models.Recipe
 import com.example.cookit.models.RecipeDetailModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,7 +18,10 @@ class APIService {
         val cantRecetas = 100;
 
 
-        private val db = FirebaseFirestore.getInstance()
+        val db = Firebase.firestore
+        val myDB = db.collection("recetas")
+
+
 
         suspend fun getRecipes (context: Context) : ArrayList<Recipe>{
             val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
@@ -28,15 +33,34 @@ class APIService {
 
 
             if (result.isSuccessful) {
-                val receta = result.body()!!.results[0]
-                Log.d("Receta save", "Titulo receta : ${receta.title}")
-                db.collection("recetas").document(receta.id.toString()).set(
-                    hashMapOf(
-                        "title" to receta.title,
-                        "image" to receta.image,
-                        "imageType" to receta.imageType ))
-                        .addOnSuccessListener { Log.d("Receta save", "DocumentSnapshot successfully written!") }
-                        .addOnFailureListener { e -> Log.w("Receta save", "Error writing document", e) }
+                var PrimerReceta = result.body()!!.results[4]
+
+                val receta = hashMapOf(
+                    "title" to PrimerReceta.title,
+                    "image" to PrimerReceta.image,
+                    "imageType" to PrimerReceta.imageType
+                )
+
+                Log.d("Receta save", "Titulo receta : ${PrimerReceta.title}")
+                myDB.document("${PrimerReceta.id}")
+                    .set(receta)
+                        .addOnSuccessListener {
+                            Log.d("Receta save", "receta guardada en DB")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("Receta save", "Error receta sin guardar en DB", e)
+                        }
+
+                myDB
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            Log.d("Receta save", "Receta leida de DB : ${document.id} => ${document.data} ")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("Receta save", "Error: Receta no existe en DB.", exception)
+                    }
 
                 return result.body()!!.results
             } else {

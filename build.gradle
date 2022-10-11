@@ -60,6 +60,22 @@ dependencies {
 
     //implementation 'com.google.firebase:firebase-auth:21.0.8'
 
+    // firebase cloud
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-auth:21.0.8'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.2'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.6'
+    implementation 'com.google.firebase:firebase-messaging:23.0.8'
+
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.0.2'
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
     implementation ("com.github.bumptech.glide:glide:4.13.2") {
         exclude group: "com.android.support"
     }
@@ -74,3 +90,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
