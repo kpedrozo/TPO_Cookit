@@ -33,7 +33,7 @@ class APIService {
 
 
             if (result.isSuccessful) {
-                var PrimerReceta = result.body()!!.results[4]
+                var PrimerReceta = result.body()!!.results[7]
 
                 val receta = hashMapOf(
                     "title" to PrimerReceta.title,

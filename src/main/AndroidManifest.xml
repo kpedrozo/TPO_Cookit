@@ -33,13 +33,13 @@
 
         <activity
             android:name=".Home"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
 <!--        <activity-->
 <!--            android:name=".Splash"-->
@@ -63,8 +63,15 @@
             android:exported="false"/>
         <activity
             android:name=".Login"
-            android:exported="false" />
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="502e29b08c5b48ee9b92ebd598c8ee8b" />

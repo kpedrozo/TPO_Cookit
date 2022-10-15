@@ -19,14 +19,19 @@ class Login : AppCompatActivity() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var btnLogin : SignInButton
+    private lateinit var btnLogin: SignInButton
 
+    // constantes
+    private companion object {
+        private const val RC_SIGN_IN = 100
+        private const val TAG = "GOOGLE_SIGN_IN_TAG"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
+        // Configure the Google Sign in
         val gsiOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -36,6 +41,7 @@ class Login : AppCompatActivity() {
 
         // iniciar firebase auth
         firebaseAuth = FirebaseAuth.getInstance()
+        checkUser()
 
 
         btnLogin = findViewById(R.id.btnGoogleSignIn)
@@ -44,13 +50,12 @@ class Login : AppCompatActivity() {
             val intent = googleSignInClient.signInIntent
             startActivityForResult(intent, 100)
         }
-        checkUser()
     }
 
     private fun checkUser() {
         // check si el usuario esta logeado
         val firebaseUser = firebaseAuth.currentUser
-        if (firebaseUser != null ) {
+        if (firebaseUser != null) {
             // Si el usuario esta logeado pasamos a Home
             startActivity(Intent(this@Login, Home::class.java))
             finish()
@@ -60,37 +65,47 @@ class Login : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 100 ){
+        // Result returned from launching the intent from Google SignInApi
+        if (requestCode == RC_SIGN_IN) {
+            Log.d(TAG, "onActivityResult: Google SignIn intent result")
             val accountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // SignIn Google OK -> intenta authenticar firebase
                 val account = accountTask.getResult(ApiException::class.java)
                 firebaseAuthWithGoogleAccount(account)
-            }
-            catch (e : Exception) {
+            } catch (e: Exception) {
                 // SignIn Google fallo
-                Log.d("Login", "onActivityResult: ${e.message}")
+                Log.d(TAG, "onActivityResult - Error: ${e.message}")
             }
         }
     }
 
-    private fun firebaseAuthWithGoogleAccount (account : GoogleSignInAccount?) {
-        Log.d("Login", "firebaseAuthWithGoogleAccount: comienza auth firebase con Google")
+    private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount?) {
+        Log.d(TAG, "firebaseAuthWithGoogleAccount: comienza auth firebase con Google")
+
         val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnSuccessListener { authResult ->
+                // login success
+                Log.d(TAG, "firebaseAuthWithGoogleAccount: LoggedIn")
+
                 // get usuario loggeado
                 val firebaseUser = firebaseAuth.currentUser
                 // get user info
                 var uid = firebaseUser!!.uid
-                var email = firebaseUser!!.email
+                var email = firebaseUser.email
+
+                Log.d(TAG, "firebaseAuthWithGoogleAccount: Uid: $uid")
+                Log.d(TAG, "firebaseAuthWithGoogleAccount: Email: $email")
 
                 // check si el usuario es nuevo o existente
-                if ( authResult.additionalUserInfo!!.isNewUser ) {
+                if (authResult.additionalUserInfo!!.isNewUser) {
                     // user NEW -> crea cuenta
+                    Log.d(TAG, "firebaseAuthWithGoogleAccount: Account created... \n$email")
                     Toast.makeText(this@Login, "Creando cuenta...", Toast.LENGTH_LONG).show()
                 } else {
                     // user existente -> Logeado
+                    Log.d(TAG, "firebaseAuthWithGoogleAccount: Usuario existente.. \n$email")
                     Toast.makeText(this@Login, "Cuenta existente...", Toast.LENGTH_LONG).show()
                 }
                 // pasamos a pantalla Home
@@ -98,11 +113,9 @@ class Login : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener { e ->
+                // login failed
+                Log.d(TAG, "firebaseAuthWithGoogleAccount: Loggin failed due to ${e.message}")
                 Toast.makeText(this@Login, "Fallo en login", Toast.LENGTH_LONG).show()
             }
     }
-
-
-
-
 }

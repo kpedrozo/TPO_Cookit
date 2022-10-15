@@ -31,7 +31,7 @@ class RecipeAdapter (var items: MutableList<Recipe>,
 
         val item = items[position]
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(item!!)
+            onItemClick?.invoke(item)
         }
     }
 

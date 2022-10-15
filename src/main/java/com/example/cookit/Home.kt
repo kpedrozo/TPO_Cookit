@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,8 @@ class Home : AppCompatActivity() {
     private var recipes = ArrayList<Recipe>()
     private var recetaDetail : RecipeDetailModel? = null
     private lateinit var adapter : RecipeAdapter
+    private lateinit var btnFavourite : ImageButton
+    private lateinit var tvUser : TextView
 
     // firebase auth
     private lateinit var firebaseAuth: FirebaseAuth
@@ -37,7 +40,7 @@ class Home : AppCompatActivity() {
         initRecyclerView()
         onClickDetails()
 
-        val btnFavourite = findViewById<ImageButton>(R.id.btnFavourite)
+        btnFavourite = findViewById(R.id.btnFavourite)
         btnFavourite.setOnClickListener{
             cambioPantallaFavoritos()
         }
@@ -63,6 +66,19 @@ class Home : AppCompatActivity() {
             startActivity(Intent(this@Home, Login::class.java))
             finish()
         }
+        else {
+            // user logueado
+            // get user email
+            val email = firebaseUser.email
+            // get user
+            val user = firebaseUser.displayName
+            // set email
+            Log.d("Login", "checkUser: ${user}")
+            tvUser = findViewById(R.id.tvUser)
+            tvUser.text = user;
+//             set name
+
+        }
     }
 
     private fun initRecyclerView() {
@@ -75,9 +91,9 @@ class Home : AppCompatActivity() {
     private fun onClickDetails() {
         adapter.onItemClick = { recipe : Recipe ->
             scope.launch {
-                var receta = MainRepository.getRecipebyID(this@Home, recipe.id)
+                val receta = MainRepository.getRecipebyID(this@Home, recipe.id)
 
-                var intent = Intent (this@Home, RecipeDetail::class.java)
+                val intent = Intent (this@Home, RecipeDetail::class.java)
                 intent.putExtra("title", receta.title)
                 intent.putExtra("img", receta.image)
                 intent.putExtra("ingredients", receta.ingredients)
