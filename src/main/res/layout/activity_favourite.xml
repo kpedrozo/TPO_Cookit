@@ -53,13 +53,13 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/btnFavourite"
+        android:id="@+id/btnHome"
         android:layout_width="57dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="36dp"
         android:background="@color/white"
-        android:contentDescription="@string/favourite"
+        android:contentDescription="@string/home"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/rvRecipes"
         app:layout_constraintStart_toEndOf="@+id/lblTituloFavourite"

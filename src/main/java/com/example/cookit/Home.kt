@@ -10,8 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookit.data.MainRepository
+import com.example.cookit.data.RoomDataBase
 import com.example.cookit.models.Recipe
 import com.example.cookit.models.RecipeDetailModel
+import com.example.cookit.models.RecipeEntity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -32,13 +37,20 @@ class Home : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var btnLogout : Button
 
+    // google logout
+    lateinit var mGoogleSignInClient : GoogleSignInClient
+//    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val recycler = findViewById<RecyclerView>(R.id.rvRecipes)
+        val adapter = RecipeAdapter(recipes, this)
 //        setContentView(R.layout.activity_main) >>>  cambio de activity principa;
         setContentView(R.layout.activity_home)
         initRecyclerView()
         onClickDetails()
+//        cargarRoom()
 
         btnFavourite = findViewById(R.id.btnFavourite)
         btnFavourite.setOnClickListener{
@@ -52,10 +64,37 @@ class Home : AppCompatActivity() {
         // handle click -> logout user
         btnLogout = findViewById(R.id.btnLogout)
         btnLogout.setOnClickListener {
-            firebaseAuth.signOut()
-            checkUser()
+            mGoogleSignInClient.signOut().addOnCompleteListener {
+                firebaseAuth.signOut()
+                checkUser()
+            }
         }
+
+
+        // Configure the Google Sign OUT
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+
+
+
+
+
     }
+
+//    private fun cargarRoom() {
+//        CoroutineScope(Dispatchers.Main).launch {
+//            val dao = RoomDataBase.getInstance(this@Home).recipeDao()
+//            recipes.forEach { recipe ->
+//                dao.insertRecipe(RecipeEntity(recipe.id, recipe.title, recipe.image))
+//            }
+//            adapter.updateEntity(dao.fetchAll())
+//        }
+//    }
 
     private fun checkUser() {
         // get current user

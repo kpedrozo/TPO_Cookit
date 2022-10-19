@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cookit.data.MainRepository
@@ -24,7 +23,7 @@ class Favourite : AppCompatActivity() {
         setContentView(R.layout.activity_favourite)
         initRecyclerView()
 
-        val btnHome = findViewById<ImageButton>(R.id.btnFavourite)
+        val btnHome = findViewById<ImageButton>(R.id.btnHome)
         btnHome.setOnClickListener{
             cambioPantallaHome()
         }
@@ -50,7 +49,7 @@ class Favourite : AppCompatActivity() {
     }
 
     fun cambioPantallaHome () {
-        var intent = Intent(this, Home::class.java)
+        val intent = Intent(this, Home::class.java)
         startActivity(intent)
         finish()
     }

@@ -17,6 +17,7 @@
     <string name="todo">TODO</string>
     <string name="sign_in">Sign In</string>
     <string name="ingredients">Ingredients</string>
+    <string name="home">Home</string>
 
 
 </resources>
