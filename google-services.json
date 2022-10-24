@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "466668260155",
+    "firebase_url": "https://loginfirebasecookit-default-rtdb.firebaseio.com",
     "project_id": "loginfirebasecookit",
     "storage_bucket": "loginfirebasecookit.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "466668260155-4dvposto8mor975lghavcv0cr6j6hm7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cookit",
+            "certificate_hash": "e1a5b46f664e662d1ffbc8dc13885f5f257095ea"
+          }
+        },
         {
           "client_id": "466668260155-jrrgjbjc65h5nmqg1bjb82h9u27pg33f.apps.googleusercontent.com",
           "client_type": 1,

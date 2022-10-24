@@ -1,7 +1,9 @@
 package com.example.cookit.data
 
 import com.example.cookit.models.RecipeDetailModel
+import com.example.cookit.models.RecipeEntity
 import com.example.cookit.models.ResponseAPI
+import io.grpc.internal.SharedResourceHolder.Resource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,5 +21,7 @@ interface RecipesAPI {
     fun getRecipebyID (@Path("id") id : Int,
                        @Header ("x-api-key") apiKey : String)
             : Call<RecipeDetailModel>
+
+
 
 }

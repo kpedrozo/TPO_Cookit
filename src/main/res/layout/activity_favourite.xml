@@ -42,24 +42,26 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
-        android:layout_width="481dp"
-        android:layout_height="585dp"
-        android:layout_marginBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblTituloFavourite"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.213" />
 
     <ImageButton
-        android:id="@+id/btnFavourite"
+        android:id="@+id/btnHome"
         android:layout_width="57dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="36dp"
         android:background="@color/white"
-        android:contentDescription="@string/favourite"
+        android:contentDescription="@string/home"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/rvRecipes"
         app:layout_constraintStart_toEndOf="@+id/lblTituloFavourite"
