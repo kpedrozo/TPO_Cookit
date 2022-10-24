@@ -67,6 +67,7 @@
         android:id="@+id/rvRecipes"
         android:layout_width="456dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/btnLogout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
@@ -95,7 +96,7 @@
         android:layout_marginBottom="4dp"
         android:background="#E91E63"
         android:text="@string/btnLogout"
-        android:textColor="#000000"
+        android:textColor="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

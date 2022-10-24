@@ -44,5 +44,7 @@ class RecipeDetail : AppCompatActivity() {
         ingredients.adapter = arrayAdapter
 
         instruccions.text = intent.extras?.getString("instruccions")
+
+
     }
 }

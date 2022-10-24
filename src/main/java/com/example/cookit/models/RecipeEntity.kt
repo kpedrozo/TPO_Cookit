@@ -9,5 +9,6 @@ data class RecipeEntity (
     @PrimaryKey @ColumnInfo(name = "id") val id : Int,
     @ColumnInfo(name = "title") val title : String,
     @ColumnInfo(name = "img") val img : String,
+    @ColumnInfo(name = "statusFav") var statusFav : Boolean,
    // @ColumnInfo(name = "imageType") val imageType: String
 )
