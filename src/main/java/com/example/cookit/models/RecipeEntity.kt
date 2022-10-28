@@ -6,7 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipes")
 data class RecipeEntity (
-    @PrimaryKey @ColumnInfo(name = "id") val id : Int,
+    @PrimaryKey
+    @ColumnInfo(name = "id") val id : Int,
+//    @PrimaryKey
+    @ColumnInfo(name = "user") val user : String,
     @ColumnInfo(name = "title") val title : String,
     @ColumnInfo(name = "img") val img : String,
     @ColumnInfo(name = "statusFav") var statusFav : Boolean,

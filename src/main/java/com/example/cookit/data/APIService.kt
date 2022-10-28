@@ -2,7 +2,6 @@ package com.example.cookit.data
 
 import android.content.Context
 import android.util.Log
-import com.bumptech.glide.load.engine.Resource
 import com.example.cookit.models.Recipe
 import com.example.cookit.models.RecipeDetailModel
 import com.example.cookit.models.RecipeEntity
@@ -16,15 +15,14 @@ class APIService {
 
         val BASE_URL = "https://api.spoonacular.com/"
         val apiKey = "502e29b08c5b48ee9b92ebd598c8ee8b"
-        val cantRecetas = 100;
+        val cantRecetas = 5;  // cambiar cantidad de recetas pedidas
 
         val TAG = "Favourite"
 
-        val db = Firebase.firestore
-        val myDB = db.collection("recetas")
+        private val myDB = Firebase.firestore.collection("favoritos")
 
-
-        suspend fun getRecipes (context: Context) : ArrayList<Recipe>{
+        suspend fun getRecipes (context: Context, user: String) : ArrayList<Recipe>{
+            Log.d(TAG, "getRecipes: getRecipes email usuario: ${user}")
             val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -40,15 +38,21 @@ class APIService {
             }
         }
 
-        suspend fun insertRecipeFavourite ( context: Context, recipe : RecipeEntity) {
-            Log.d(TAG, "insertRecipeFavourite: aca deberia insertarse en favoritos")
-            val room = RoomDataBase.getInstance(context).recipeDao().insertRecipe(recipe)
-            var recetaFavorita = recipe
+        suspend fun insertRecipeFavourite (
+            context: Context,
+            recetaFavorita: RecipeEntity,
+            user: String
+        ) {
+
+            val room = RoomDataBase.getInstance(context).recipeDao().insertRecipe(recetaFavorita)
+
             val receta = hashMapOf(
                 "title" to recetaFavorita.title,
                 "image" to recetaFavorita.img
             )
-            myDB.document("${recetaFavorita.id}")
+            myDB
+                .document(user).collection("recetas")
+                .document("${recetaFavorita.id}")
                 .set(receta)
                 .addOnSuccessListener {
                     Log.d(TAG, "insertRecipeFavourite: receta favorita guardada en Firestore")
@@ -75,14 +79,21 @@ class APIService {
             }
         }
 
-        suspend fun getRecipesFavourite(context: Context): MutableList<RecipeEntity> {
-            val room = RoomDataBase.getInstance(context).recipeDao().fetchAll()
-            return room;
+        suspend fun getRecipesFavourite(context: Context, user: String?): MutableList<RecipeEntity> {
+//            val recetasRoom = RoomDataBase.getInstance(context).recipeDao().fetchAll(user!!)
+//            Log.d(TAG, "getRecipesFavourite: email user :  ${user}")
+//            recetasRoom.forEach { r ->
+//                Log.d(TAG, "GETRecipeFavourite: ${r.title} || ${r.statusFav}")
+//            }
+//            Log.d(TAG, "getRecipesFavourite: email user :  ${user}")
+            return RoomDataBase.getInstance(context).recipeDao().fetchAll(user!!);
         }
 
-        suspend fun deleteRecipeFavourite(context: Context, id: Int) {
+        suspend fun deleteRecipeFavourite(context: Context, id: Int, user: String) {
             val room = RoomDataBase.getInstance(context).recipeDao().deleteByID(id)
-            myDB.document("${id}")
+
+            myDB.document(user).collection("recetas")
+                .document("$id")
                 .delete()
                 .addOnSuccessListener {
                     Log.d(TAG, "insertRecipeFavourite: receta favorita ELIMINADA de Firestore")
@@ -95,7 +106,7 @@ class APIService {
 
         suspend fun selectRecipeFavouriteByID(context: Context, id: Int): RecipeEntity {
             val room = RoomDataBase.getInstance(context).recipeDao().selectByID(id)
-            myDB.document("${id}")
+            myDB.document("$id")
                 .get()
                 .addOnSuccessListener {
                     Log.d(TAG, "selectRecipeFavouriteByID: get receta favorita by ID desde Firestore")

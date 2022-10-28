@@ -14,6 +14,7 @@ class RecipeEntityAdapter (val context: Context) : RecyclerView.Adapter<RecipeVi
 
     var onItemClick : ((RecipeEntity) -> Unit)? = null
     var onItemNOTFavouriteClick : ((RecipeEntity) -> Unit)? = null
+    var onItemFavouriteClick : ((RecipeEntity) -> Unit)? = null
 
 
     private var items : MutableList<RecipeEntity> = mutableListOf()
@@ -48,7 +49,7 @@ class RecipeEntityAdapter (val context: Context) : RecyclerView.Adapter<RecipeVi
                 Log.d("Favourite", "onBindViewHolder: eliminar de favoritos")
                 item.statusFav = false;
                 holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.darker_gray)
-                onItemClick?.invoke(favourite)
+                onItemNOTFavouriteClick?.invoke(favourite)
                 flag = false;
             } else {
                 // pasar a favoritos de nuevo
@@ -56,7 +57,7 @@ class RecipeEntityAdapter (val context: Context) : RecyclerView.Adapter<RecipeVi
                 item.statusFav = true;
                 holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.holo_red_dark);
                 flag = true;
-                onItemNOTFavouriteClick?.invoke(favourite)
+                onItemFavouriteClick?.invoke(favourite)
             }
         }
     }

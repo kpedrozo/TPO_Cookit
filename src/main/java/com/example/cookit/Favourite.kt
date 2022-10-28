@@ -2,7 +2,6 @@ package com.example.cookit
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +10,7 @@ import com.example.cookit.data.MainRepository
 import com.example.cookit.models.Recipe
 import com.example.cookit.models.RecipeDetailModel
 import com.example.cookit.models.RecipeEntity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -22,18 +22,24 @@ class Favourite : AppCompatActivity() {
     private var recipesEntities = ArrayList<RecipeEntity>()
     private lateinit var adapter : RecipeEntityAdapter
 
+    private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    val user = firebaseAuth.currentUser!!.email
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favourite)
         initRecyclerView()
-        onClickFavouriteDetails()
-        onItemNOTFavouriteClick()
+        onClickDetails()
+        agregarFavorito()
+        eliminarFavorito()
 
         val btnHome = findViewById<ImageButton>(R.id.btnHome)
         btnHome.setOnClickListener{
             cambioPantallaHome()
         }
     }
+
 
     fun initRecyclerView() {
         rvRecipes = findViewById<RecyclerView>(R.id.rvRecipes)
@@ -45,31 +51,35 @@ class Favourite : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         scope.launch {
-            recipesEntities =
-                MainRepository.getRecipesFromRoom(this@Favourite) as ArrayList<RecipeEntity>
-//                MainRepository.getRecipes(this@Favourite)
-            Log.d("Favourite", "onStart: tengo las recetas desde room q son favoritas")
+            recipesEntities = MainRepository.getRecipesFromRoom(this@Favourite, user) as ArrayList<RecipeEntity>
             withContext(Dispatchers.Main) {
                 adapter.update(recipesEntities)
-                //adapter.updateEntity(recipesEntities)
             }
 
         }
     }
 
-    private fun onClickFavouriteDetails() {
-        adapter.onItemClick = {
-            scope.launch{
-                val receta = MainRepository.getRecipebyID(this@Favourite, it.id)
-                showRecipeDetails(receta)
+    private fun eliminarFavorito() {
+        adapter.onItemNOTFavouriteClick = {
+            scope.launch {
+                MainRepository.deleteRecipeFromFavourite(this@Favourite, it.id, user!!)
             }
         }
     }
 
-    private fun onItemNOTFavouriteClick() {
+    private fun agregarFavorito() {
+        adapter.onItemFavouriteClick = {
+            scope.launch {
+                MainRepository.insertRecipeFavourite(this@Favourite, it, user!! )
+            }
+        }
+    }
+
+    private fun onClickDetails() {
         adapter.onItemClick = {
             scope.launch {
-                MainRepository.deleteRecipeFromFavourite(this@Favourite, it.id)
+                val receta = MainRepository.getRecipebyID(this@Favourite, it.id)
+                showRecipeDetails(receta)
             }
         }
     }
