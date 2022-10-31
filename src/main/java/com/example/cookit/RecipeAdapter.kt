@@ -17,6 +17,7 @@ class RecipeAdapter (var items: MutableList<Recipe>,
     var onItemClick : ((Recipe) -> Unit)? = null
     var onItemFavouriteClick : ((Recipe) -> Unit)? = null
     var onItemNOTFavouriteClick : ((Recipe) -> Unit)? = null
+    var onCLickFav : ((Recipe) -> Unit)? = null
 
     private val context = context
 
@@ -42,23 +43,28 @@ class RecipeAdapter (var items: MutableList<Recipe>,
         if (item.statusFav) {
             holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.holo_red_dark)
             Log.d("Favourite", "onBindViewHolder: title : ${item.title} || status ${item.statusFav}")
+        } else {
+            holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.darker_gray)
         }
 
         val favourite = items[position]
         var flag = true;
         holder.btnFavourite.setOnClickListener {
-            Log.d("Favourite", "onBindViewHolder: aca marcaria la receta como fav")
-            if (flag) {
-                item.statusFav = true;
-                holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.holo_red_dark);
+            var status = favourite.statusFav;
+            Log.d("Favourite", "onBindViewHolder: aca dependeria del status fav")
+            if (status) {
+                // si ya esta en favoritos deberia eliminarlo
+                Log.d("Favourite", "onBindViewHolder: aca eliminamos al que esta en favoritos")
+                holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.darker_gray)
                 flag = false;
-                onItemFavouriteClick?.invoke(favourite)
-            } else {
-                    Log.d("Favourite", "onBindViewHolder: aca ELIMINO la receta como fav")
-                item.statusFav = false;
-                holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.darker_gray);
-                flag = true;
                 onItemNOTFavouriteClick?.invoke(favourite)
+
+            } else {
+                // si NO ES FAVORITO agregarlo a favoritos
+                Log.d("Favourite", "onBindViewHolder: Aca agregamos a favoritos")
+                holder.btnFavourite.backgroundTintList = getColorStateList(context, android.R.color.holo_red_dark)
+                flag = true;
+                onItemFavouriteClick?.invoke(favourite)
             }
         }
     }

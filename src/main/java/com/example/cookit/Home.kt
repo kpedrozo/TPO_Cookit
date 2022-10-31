@@ -36,12 +36,11 @@ class Home : AppCompatActivity() {
     private lateinit var tvUser : TextView
 
     // firebase auth
-    private lateinit var firebaseAuth: FirebaseAuth
+    private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var btnLogout : Button
 
     // google logout
     lateinit var mGoogleSignInClient : GoogleSignInClient
-//    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +50,7 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         initRecyclerView()
         onClickDetails()
-        cargarRoom()
+        agregarFavorito()
         eliminarFavorito()
 
         btnFavourite = findViewById(R.id.btnFavourite)
@@ -59,8 +58,6 @@ class Home : AppCompatActivity() {
             cambioPantallaFavoritos()
         }
 
-        // init firebase auth
-        firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
 
         // handle click -> logout user
@@ -130,29 +127,22 @@ class Home : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun cargarRoom() {
+    private fun agregarFavorito() {
+        val user = firebaseAuth.currentUser!!.email
+        Log.d("Favourite", "agregarFavorito: email HOME agregarFavorito ${user}")
         adapter.onItemFavouriteClick = { recipe : Recipe ->
             scope.launch {
-                val dao = RoomDataBase.getInstance(this@Home).recipeDao()
-                dao.insertRecipe(RecipeEntity(recipe.id, recipe.title, recipe.image, true))
-                Log.d("Favourite", "cargarRoom: la receta se guardo en room")
-                MainRepository.insertRecipeFavourite(this@Home, RecipeEntity(recipe.id, recipe.title, recipe.image, true))
-                Log.d("Favourite", "cargarRoom: Aca deberia insertarse en favoritos")
-//                adapterEntity.update(dao.fetchAll())
-                Log.d("Favourite", "cargarRoom: despues del adapter fetch all")
+                MainRepository.insertRecipeFavourite(this@Home, RecipeEntity(recipe.id,
+                    user!!, recipe.title, recipe.image, true), user)
             }
         }
     }
 
     private fun eliminarFavorito() {
+        val user = firebaseAuth.currentUser!!.email
         adapter.onItemNOTFavouriteClick = { recipe : Recipe ->
             scope.launch{
-                Log.d("Favourite", "eliminarFavorito: llamo al DELETE del MAIN")
-                MainRepository.deleteRecipeFromFavourite(this@Home, recipe.id)
-                Log.d("Favourite", "eliminarFavorito: delete ok")
-
-
-                // ademas de cambiar el status a false, no permite cambiar el color del button fav a gris si fui a FAVORITOS y volvi a HOME.
+                MainRepository.deleteRecipeFromFavourite(this@Home, recipe.id, user!!)
                 recipe.statusFav = false;
             }
         }
@@ -161,31 +151,32 @@ class Home : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         scope.launch {
-            // me traigo las recetas de DB que son favoritas
+            val user = firebaseAuth.currentUser!!.email
+            Log.d("Favourite", "onStart email HOME: ${user}")
             val recipesRoom = RoomDataBase.getInstance(this@Home).recipeDao()
-            recipesRoom.fetchAll()
+            recipesRoom.fetchAll(user!!)
             Log.d("Favourite", "onStart: ${recipesRoom}")
-            // get de recetas a la API
-            recipes = MainRepository.getRecipes(this@Home) // hasta aca tengo las recetas > necesito mostrarlas
+            var recipesMain = MainRepository.getRecipes(this@Home, user)
             Log.d("getrecetas OK", "llegamooos")
-            // si las recetas coinciden, mostrarlas con el button favorito ROJO.
-            recipes = verificarFavoritos(recipesRoom, recipes)
+            recipes = verificarFavoritos(recipesRoom, recipesMain, user)
             withContext(Dispatchers.Main) {
                 adapter.update(recipes)
             }
         }
     }
 
-    private suspend fun verificarFavoritos(recipesRoom: RecipeDao, recipes: ArrayList<Recipe>): ArrayList<Recipe> {
+    private suspend fun verificarFavoritos(recipesRoom: RecipeDao, recipes: ArrayList<Recipe>, user: String): ArrayList<Recipe> {
         for (recipe in recipes){
-            recipesRoom.fetchAll().toSet().forEach { re ->
-                if(re.id == recipe.id) {
-                    recipe.statusFav = true;
+            val rr = recipesRoom.fetchAll(user)
+                for (r in rr) {
+                    if (r.id == recipe.id){
+                        recipe.statusFav = true;
+                    }
                 }
             }
-        }
         return recipes;
     }
+
 
     private fun cambioPantallaFavoritos() {
         val intent = Intent(this, Favourite::class.java)

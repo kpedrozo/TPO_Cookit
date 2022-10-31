@@ -1,10 +1,8 @@
 package com.example.cookit
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.cookit.models.Ingredients
@@ -14,6 +12,18 @@ class RecipeDetail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_recipe_detail)
+
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener{
+            cambioPantallaFavoritos()
+        }
+    }
+
+    private fun cambioPantallaFavoritos() {
+        // me lleva siempre a HOME
+        val intent = Intent(this, Home::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onStart() {
