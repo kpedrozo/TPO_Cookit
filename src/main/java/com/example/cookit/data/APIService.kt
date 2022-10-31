@@ -90,7 +90,7 @@ class APIService {
         }
 
         suspend fun deleteRecipeFavourite(context: Context, id: Int, user: String) {
-            val room = RoomDataBase.getInstance(context).recipeDao().deleteByID(id)
+            val room = RoomDataBase.getInstance(context).recipeDao().deleteByID(id, user)
 
             myDB.document(user).collection("recetas")
                 .document("$id")

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.cookit.models.RecipeDao
 import com.example.cookit.models.RecipeEntity
 
-@Database(entities = [RecipeEntity::class], version = 4, exportSchema = false)
+@Database(entities = [RecipeEntity::class], version = 5, exportSchema = false)
 abstract class RoomDataBase : RoomDatabase() {
 
     abstract fun recipeDao() : RecipeDao
