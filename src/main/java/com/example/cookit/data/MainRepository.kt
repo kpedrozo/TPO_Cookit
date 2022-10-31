@@ -16,7 +16,7 @@ class MainRepository {
         }
 
         suspend fun getRecipesFromRoom (context: Context, user: String?) : MutableList<RecipeEntity> {
-            return APIService.getRecipesFavourite(context, user);
+            return APIService.getRecipesFavourite(context, user!!);
         }
 
         suspend fun deleteRecipeFromFavourite (context: Context, id: Int?, user: String) {

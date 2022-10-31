@@ -15,7 +15,7 @@ class APIService {
 
         val BASE_URL = "https://api.spoonacular.com/"
         val apiKey = "502e29b08c5b48ee9b92ebd598c8ee8b"
-        val cantRecetas = 5;  // cambiar cantidad de recetas pedidas
+        val cantRecetas = 100;  // cambiar cantidad de recetas pedidas
 
         val TAG = "Favourite"
 
@@ -79,14 +79,38 @@ class APIService {
             }
         }
 
-        suspend fun getRecipesFavourite(context: Context, user: String?): MutableList<RecipeEntity> {
+        suspend fun getRecipesFavourite(context: Context, user: String): MutableList<RecipeEntity> {
 //            val recetasRoom = RoomDataBase.getInstance(context).recipeDao().fetchAll(user!!)
 //            Log.d(TAG, "getRecipesFavourite: email user :  ${user}")
 //            recetasRoom.forEach { r ->
 //                Log.d(TAG, "GETRecipeFavourite: ${r.title} || ${r.statusFav}")
 //            }
 //            Log.d(TAG, "getRecipesFavourite: email user :  ${user}")
-            return RoomDataBase.getInstance(context).recipeDao().fetchAll(user!!);
+//            val room = RoomDataBase.getInstance(context).recipeDao()
+//            val recetasDeFirebase = ArrayList<RecipeEntity>()
+//            var recetasFirebase = myDB.document(user).collection("recetas")
+//                .get()
+//                .addOnSuccessListener { documents ->
+//                    for (document in documents) {
+//                        val receta : RecipeEntity
+//                        val id = document.id
+//                        val title = document.data["title"]
+//                        val img = document.data["image"]
+//                        recetasDeFirebase.add(RecipeEntity(Integer.parseInt(id), user, title as String, img as String, true))
+//                    }
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.w(TAG, "getRecipesFavourite: Error al obtener recetas de firebase", e)
+//                }
+//            recetasDeFirebase.forEach { r ->
+//                room.insertRecipe(r)
+//            }
+
+//            myDB.document(user).collection("recetas").get()
+//                .addOnSuccessListener {
+//                    Log.d(TAG, "getRecipesFavourite: ")
+//                }
+            return RoomDataBase.getInstance(context).recipeDao().fetchAll(user);
         }
 
         suspend fun deleteRecipeFavourite(context: Context, id: Int, user: String) {

@@ -51,7 +51,7 @@ class Favourite : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         scope.launch {
-            recipesEntities = MainRepository.getRecipesFromRoom(this@Favourite, user) as ArrayList<RecipeEntity>
+            recipesEntities = MainRepository.getRecipesFromRoom(this@Favourite, user!!) as ArrayList<RecipeEntity>
             withContext(Dispatchers.Main) {
                 adapter.update(recipesEntities)
             }
