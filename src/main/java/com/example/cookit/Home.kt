@@ -118,6 +118,7 @@ class Home : AppCompatActivity() {
         }
     }
 
+
     private fun showRecipeDetails(receta: RecipeDetailModel) {
         val intent = Intent (this@Home, RecipeDetail::class.java)
         intent.putExtra("title", receta.title)
